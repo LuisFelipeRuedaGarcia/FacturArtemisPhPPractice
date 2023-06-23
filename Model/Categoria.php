@@ -26,29 +26,70 @@ class Categoria extends Conectar{
             $this->$Property=$value;
         }
     }
+
     Public function Insert(){
-try {
-    echo 0;
-    $stm = $this->DbCnx->prepare("INSERT INTO Categorias(IdCategoria,Nombre,Descripcion,Imagen) VAlUES (?,?,?,?);");
-    echo 1;
-    $stm->execute([$this->IdCategoria,$this->Nombre,$this->Descripcion,$this->Imagen]);
-    echo 2;
-} catch (PDOException $e) {
-    return $e->getMessage();
-}
+        try {
+            echo 0;
+            $stm = $this->DbCnx->prepare("INSERT INTO Categorias(IdCategoria,Nombre,Descripcion,Imagen) VAlUES (?,?,?,?);");
+            echo 1;
+            $stm->execute([$this->IdCategoria,$this->Nombre,$this->Descripcion,$this->Imagen]);
+            echo 2;
+            }
+        catch (PDOException $e) {
+                return $e->getMessage();
+            }
+        }
+
+    public function Fetch(){
+        try {
+            $stm = $this->DbCnx->Prepare("SELECT * FROM Categorias");
+            $stm->execute();
+            return $stm->fetchAll();
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function FetchOne(){
+        try {
+            $stm=$this->DbCnx->Prepare("SELECT * FROM Categorias WHERE IdCategoria=?");
+            $stm->execute([$this->IdCategoria]);
+            return $stm->FetchAll();
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function Update($OldId){
+        try {
+            $stm=$this->DbCnx->prepare("UPDATE Categorias SET IdCategoria = ?, Nombre = ?, Descripcion = ?, Imagen = ? WHERE IdCategoria= ?");
+            $stm->execute([$this->IdCategoria,$this->Nombre,$this->Descripcion,$this->Imagen, $OldId]);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+    public function Delete(){
+        try {
+            $stm=$this->DbCnx->prepare("DELETE FROM Categorias WHERE IdCategoria = ?");
+            $stm->execute([$this->IdCategoria]);
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
 }
 
-$Categoria = new Categoria();
-$Categoria->IdCategioria = 123;
-$Categoria->Nombre = "Aseo Personal";
-$Categoria->Descripcion = "Los Productos de esta Categoria Lorem ...";
-$Categoria->Imagen = 1;
-
-echo $Categoria->IdCategioria;
+/* $Categoria = new Categoria();
+$Categoria->IdCategoria = 999; */
+/* $Categoria->Nombre = "No Aseo Personal";
+$Categoria->Descripcion = "No Los Productos de esta Categoria Lorem ...";
+$Categoria->Imagen = 0; */
+/* echo $Categoria->IdCategoria;
 echo $Categoria->Nombre;
 echo $Categoria->Descripcion;
-echo $Categoria->Imagen;
-
-$Categoria->Insert();
+echo $Categoria->Imagen; */
+/* $Categoria->Insert(); */
+/* var_dump($Categoria->Fetch()); */
+/* var_dump($Categoria->FetchOne()); */
+/* $Categoria->Update(123); */
+/* $Categoria->Delete(); */
 ?>
